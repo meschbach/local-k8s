@@ -16,7 +16,8 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
+      - CreateNamespace=true
   destination:
-    namespace: argocd
+    namespace: pg-16-4
     server: https://kubernetes.default.svc
   project: default

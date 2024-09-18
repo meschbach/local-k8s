@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-loki
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+    - repoURL: "https://grafana.github.io/helm-charts"
+      chart: "loki"
+      targetRevision: "6.6.3"
+      helm:
+        # https://github.com/grafana/loki/blob/v3.1.1/production/helm/loki/values.yaml
+        valueFiles:
+          - "$values/cluster/grafana/grafana-loki-config.yaml"
+    - repoURL: https://gitea.prod.workshop.meschbach.org/meschbach/argo-root.git
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
+  destination:
+    namespace: grafana-loki
+    server: https://kubernetes.default.svc
+  project: default

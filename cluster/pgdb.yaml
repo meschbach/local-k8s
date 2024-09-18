@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-pgdb-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+    - path: "cluster/pgdb"
+      repoURL: https://github.com/meschbach/local-k8s.git
+      targetRevision: "main"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default

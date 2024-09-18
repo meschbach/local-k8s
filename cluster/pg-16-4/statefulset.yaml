@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-16-4
+spec:
+  selector:
+    matchLabels:
+      app: postgres-16-4
+  serviceName: pg-16-4
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-16-4
+    spec:
+      containers:
+        - name: service
+          image: "postgres:16.4"
+          ports:
+            - containerPort: 5432
+              protocol: "TCP"
+              name: "postgres"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          stdin: false
+          tty: false
+          env:
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: "password"
+                  name: "cluster-pgdb"
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql"
+              name: "data"
+          readinessProbe:
+            initialDelaySeconds: 10
+            exec:
+              command:
+                - sh
+                - "-c"
+                - "exec"
+                - "pg_isready"
+          livenessProbe:
+            initialDelaySeconds: 10
+            exec:
+              command:
+                - sh
+                - "-c"
+                - "exec"
+                - "pg_isready"
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: "data"
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 1Gi

@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-pgdb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+    - path: "config/crd"
+      repoURL: https://github.com/meschbach/pgdb
+      targetRevision: "main"
+    - path: "config/default"
+      repoURL: https://github.com/meschbach/pgdb
+      targetRevision: "main"
+      kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: controller-manager
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/image
+                value: meschbach/pgdb:v0.3.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default

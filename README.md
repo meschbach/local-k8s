@@ -7,12 +7,12 @@ Toolbox of Local Kubernetes
 * Postgres 16
 
 ## Installing
-Ensure your local k8s context is targeted then run `./install.sh`.
+Ensure your local k8s context is targeted then run `./local-k8s.sh install.sh`.
 
-To view the current state of the installation run `argo-config.sh` to be given the URL and authentication information.
+To view the current state of the installation run `./local-k8s.sh argocd` to be given the URL and authentication information.
 Due to image pulling this may take a few minutes.
 
-Once the services are running you may get the configurations for each by running `./exported-services.sh`
+Once the services are running you may get the configurations for each by running `./local-k8s.sh services`
 
 ## Development
 Fork and update your `root.yaml` to point to your repository.  Looking for a better method beyond writing a program

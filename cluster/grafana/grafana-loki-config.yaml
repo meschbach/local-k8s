@@ -29,6 +29,8 @@ resultsCache:
   enabled: false
 gateway:
   enabled: false
+chunksCache:
+  enabled: false
 monitoring:
   selfMonitoring:
     enabled: false

@@ -53,3 +53,5 @@ datasources:
           spanBar:
             type: 'Tag'
             tag: 'http.path'
+service:
+  type: LoadBalancer

@@ -7,3 +7,6 @@ persistence:
   accessModes:
     - ReadWriteOnce
   size: 5Gi
+
+service:
+  type: LoadBalancer

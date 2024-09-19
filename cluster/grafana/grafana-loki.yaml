@@ -14,7 +14,7 @@ spec:
         # https://github.com/grafana/loki/blob/v3.1.1/production/helm/loki/values.yaml
         valueFiles:
           - "$values/cluster/grafana/grafana-loki-config.yaml"
-    - repoURL: https://gitea.prod.workshop.meschbach.org/meschbach/argo-root.git
+    - repoURL: https://github.com/meschbach/local-k8s.git
       targetRevision: main
       ref: values
   syncPolicy:

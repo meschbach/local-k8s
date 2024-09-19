@@ -5,14 +5,14 @@ datasources:
     datasources:
       - name: loki
         type: loki
-        url: http://loki-headless.grafana-loki.svc.workshop.k8s:3100
+        url: http://loki-headless.grafana-loki.svc:3100
         jsonData:
           httpHeaderName1: 'X-Scope-OrgID'
         secureJsonData:
           httpHeaderValue1: '1'
       - name: "Cluster Tempo"
         type: tempo
-        url: http://grafana-tempo.grafana-tempo.svc.workshop.k8s:3100/
+        url: http://grafana-tempo.grafana-tempo.svc:3100/
         baseAuth: false
         jsonData:
           tracesToLogsV2:

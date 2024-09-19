@@ -2,7 +2,9 @@
 Toolbox of Local Kubernetes
 
 ## Provides
+* ArgoCD
 * Grafana with Loki, Promtail, and Tempo.
+* Postgres 16
 
 ## Installing
 Ensure your local k8s context is targeted then run `./install.sh`.

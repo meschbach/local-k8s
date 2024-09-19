@@ -16,7 +16,7 @@ loki:
 singleBinary:
   replicas: 1
   persistence:
-    storageClass: local-path
+    storageClass: standard
 read:
   replicas: 0
 backend:

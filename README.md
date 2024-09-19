@@ -12,4 +12,5 @@ Fork and update your `root.yaml` to point to your repository.  Looking for a bet
 which will update them repository by editing the yaml.  Mabye using Gitea?
 
 ## Known working configurations
-* Rancher for Desktop on MacOS
+* Minikube - forwards ports
+* Rancher for Desktop on MacOS -- Does not forward ports.

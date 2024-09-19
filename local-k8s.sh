@@ -5,6 +5,7 @@ source "$SCRIPT_DIR/common.sh"
 
 subarg=${1:-help}; shift
 
+set -e
 case "${subarg}" in
   "help")
     cat <<EOF
@@ -21,6 +22,15 @@ EOF
   ;;
   "services")
     services_json
+  ;;
+  "create-db")
+    create_db $1
+  ;;
+  "delete-db")
+    delete_db $1
+  ;;
+  "db-pgx-string")
+    db_connection_env $1
   ;;
   "install")
     cmd_install

@@ -140,7 +140,7 @@ function delete_db() {
 function db_connection_env() {
   local db_name=${1:-default-db}; shift
   local svc=$(services_json)
-  local secret_name=$(kubectl get database armada-test -o json |jq -r '.status["database-secret"]')
+  local secret_name=$(kubectl get database $db_name -o json |jq -r '.status["database-secret"]')
   local database=$(extract_secret default $secret_name user)
   local user=$(extract_secret default $secret_name user)
   local pass=$(extract_secret default $secret_name password)

@@ -9,7 +9,7 @@ spec:
   sources:
     - repoURL: "https://nats-io.github.io/k8s/helm/charts"
       chart: "nats"
-      targetRevision: "8.5.1"
+      targetRevision: "0.13.1"
       helm:
         valueFiles:
           - "$values/cluster/nats-config.yaml"

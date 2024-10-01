@@ -10,7 +10,7 @@ config:
 
 container:
   env:
-    GOMEMLIMIT: 64Mi
+    GOMEMLIMIT: 64MiB
   merge:
     resources:
       requests:

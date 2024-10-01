@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-nats-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+    - repoURL: "https://nats-io.github.io/k8s/helm/charts/"
+      chart: "nats"
+      targetRevision: "8.5.1"
+      helm:
+        valueFiles:
+          - "$values/cluster/nats-config.yaml"
+    - repoURL: https://github.com/meschbach/local-k8s.git
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default

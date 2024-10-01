@@ -1,0 +1,26 @@
+config:
+  cluster:
+    enabled: true
+    replicas: 3
+  jetstream:
+    enabled: true
+    fileStore:
+      pvc:
+        size: 1Gi
+
+container:
+  env:
+    GOMEMLIMIT: 64Mi
+  merge:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 64Mi
+      limits:
+        cpu: "200m"
+        memory: 128Mi
+
+service:
+  merge:
+    spec:
+      type: LoadBalancer

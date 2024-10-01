@@ -9,6 +9,8 @@ config:
         size: 1Gi
 
 container:
+  image:
+    tag: 2.10.21-alpine
   env:
     GOMEMLIMIT: 64Mi
   merge:

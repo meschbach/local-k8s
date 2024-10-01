@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   sources:
-    - repoURL: "https://nats-io.github.io/k8s/helm/charts/"
+    - repoURL: "https://nats-io.github.io/k8s/helm/charts"
       chart: "nats"
       targetRevision: "8.5.1"
       helm:

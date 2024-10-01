@@ -1,15 +1,14 @@
-cluster:
-  enabled: true
-  replicas: 3
-jetstream:
-  enabled: true
-  fileStore:
-    pvc:
-      size: 1Gi
+config:
+  cluster:
+    enabled: true
+    replicas: 3
+  jetstream:
+    enabled: true
+    fileStore:
+      pvc:
+        size: 1Gi
 
 container:
-  image:
-    tag: 2.10.21-alpine
   env:
     GOMEMLIMIT: 64Mi
   merge:

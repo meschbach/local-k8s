@@ -35,8 +35,24 @@ EOF
   "install")
     cmd_install
   ;;
+  "up")
+    cmd_up
+  ;;
+  "down")
+    cmd_down
+  ;;
+  "addons")
+    cmd_addons_root "$@"
+  ;;
   *)
-    echo "Unkonwn.  Try 'help'"
-    exit -2
+    if [ -d "$SCRIPT_DIR/addons/$subarg" ]; then
+      (cd "$SCRIPT_DIR/addons/$subarg"
+      source "./hooks.sh"
+      cmd_root "$@"
+      )
+    else
+      echo "Unkonwn.  Try 'help'"
+      exit -2
+    fi
   ;;
 esac

@@ -49,6 +49,9 @@ function services_json() {
     \"address\": \"http://$(svc_address grafana grafana name service)\",
     \"user\": \"$(extract_secret grafana grafana admin-user)\",
     \"password\": \"$(extract_secret grafana grafana admin-password)\"
+  },
+  \"nats\": {
+    \"address\": \"$(svc_address argocd cluster-nats-app name nats)\"
   }
 }"
 }
@@ -56,10 +59,13 @@ function services_json() {
 function cmd_install() {
   set -e
   ensure_namespace argocd
-  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.12.6/manifests/install.yaml
   kubectl apply -f root.yaml
   kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
+  echo ""
+  echo "Waiting for ArgoCD to come online"
+  echo ""
   while [ -z $(kubectl get secrets -n argocd |grep initial-admin-secret |wc -l) ]; do
     sleep 5
   done
@@ -146,4 +152,41 @@ function db_connection_env() {
   local pass=$(extract_secret default $secret_name password)
   local hostport=$(jq -r '.postgres.address' <<<$svc)
   echo "postgres://${user}:${pass}@${hostport}/${database}"
+}
+
+function cmd_up() {
+     minikube start --driver=qemu  --network socket_vmnet --service-cluster-ip-range 10.112.0.0/12
+     cmd_install
+}
+
+function cmd_down() {
+  minikube delete
+}
+
+function cmd_addons_root() {
+  verb=${1:-help}; shift || true
+  name=${1:-reserved}; shift || true
+  echo "addons ${verb} ${name}"
+
+  case "${verb}" in
+  "install")
+    echo "Installing $name"
+    (
+    cd $SCRIPT_DIR/addons/$name
+    source "./hooks.sh"
+    cmd_addon_up
+    )
+  ;;
+  "remove")
+    echo "Removing $name"
+    (
+    cd $SCRIPT_DIR/addons/$name
+    source "./hooks.sh"
+    cmd_addon_down
+    )
+  ;;
+  *)
+    echo "Usage: local-k8s addons [install/remove] <name>"
+    ;;
+  esac
 }
